@@ -49,7 +49,7 @@ mkdir vendor
 sudo mount -r "chromeos/$CHROMEOS_ANDROID_VENDOR_IMAGE" vendor
 
 echo " -> Deleting old files"
-rm -r "$TARGET_DIR"
+rm -rf "$TARGET_DIR"
 mkdir "$TARGET_DIR"
 echo "$CHROMEOS_VERSION" > "$TARGET_DIR/version"
 
