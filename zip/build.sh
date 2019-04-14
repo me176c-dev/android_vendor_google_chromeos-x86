@@ -63,6 +63,8 @@ VERSION="$version"
 EOF
 echo "# Dummy file; update-binary is a shell script." > META-INF/com/google/android/updater-script
 
+cp "$main_dir/LICENSE" LICENSE
+
 # Normalize file modification times for reproducible builds
 find . -print0 | xargs -0r touch -hr "$main_dir/proprietary"
 
@@ -70,5 +72,5 @@ find . -print0 | xargs -0r touch -hr "$main_dir/proprietary"
 mkdir -p "$out_dir"
 filename="$type-x86-chromeos-$version.zip"
 rm -f "$out_dir/$filename"
-zip -rqX "$out_dir/$filename" META-INF "$type.tar"
+zip -rqX "$out_dir/$filename" META-INF LICENSE "$type.tar"
 echo "Successfully built: $filename"
