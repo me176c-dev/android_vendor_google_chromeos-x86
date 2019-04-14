@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Use consistent umask for reproducible builds
+umask 022
+
 CHROMEOS_VERSION="11647.104.1_nocturne"
 CHROMEOS_RECOVERY="chromeos_${CHROMEOS_VERSION}_recovery_stable-channel_mp"
 
@@ -34,7 +37,7 @@ function cleanup {
 trap cleanup EXIT
 
 CHROMEOS_EXTRACTED="$CHROMEOS_RECOVERY.bin"
-CHROMEOS_ANDROID_VENDOR_IMAGE="opt/google/containers/android/vendor.raw.img"
+CHROMEOS_ANDROID_VENDOR_IMAGE="chromeos/opt/google/containers/android/vendor.raw.img"
 
 echo " -> Extracting recovery image"
 unzip -q "$CHROMEOS_FILE" "$CHROMEOS_EXTRACTED"
@@ -46,7 +49,7 @@ loop_dev=$(sudo losetup -r -f --show --partscan "$CHROMEOS_EXTRACTED")
 mkdir chromeos
 sudo mount -r "${loop_dev}p3" chromeos
 mkdir vendor
-sudo mount -r "chromeos/$CHROMEOS_ANDROID_VENDOR_IMAGE" vendor
+sudo mount -r "$CHROMEOS_ANDROID_VENDOR_IMAGE" vendor
 
 echo " -> Deleting old files"
 rm -rf "$TARGET_DIR"
@@ -84,6 +87,6 @@ lib/arm
 EOF
 
 # Normalize file modification times
-touch -hr "$CHROMEOS_EXTRACTED" "$TARGET_DIR"{/*,}
+touch -hr "$CHROMEOS_ANDROID_VENDOR_IMAGE" "$TARGET_DIR"{/*,}
 
 echo "Done"

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Use consistent environment for reproducible builds
+export TZ=UTC
+export LC_ALL=C
+umask 022
+
 type="${1:-}"
 case "$type" in
     widevine) name="Widevine" ;;
@@ -23,9 +28,10 @@ cd "$temp_dir"
 
 # Generate addond script (runs when upgrading system to restore modifications)
 mkdir -p system/addon.d
+ADDOND_SCRIPT="addon.d/70-$type.sh"
 ADDOND_ADDON="$zip_dir/addond.$type.sh"
 [[ -f "$ADDOND_ADDON" ]] || ADDOND_ADDON=""
-cat - "$zip_dir/addond.tail.sh" $ADDOND_ADDON > "system/addon.d/70-$type.sh" <<EOH
+cat - "$zip_dir/addond.tail.sh" $ADDOND_ADDON > "system/$ADDOND_SCRIPT" <<EOH
 #!/sbin/sh
 #
 # ADDOND_VERSION=1
@@ -42,13 +48,16 @@ $(find "$main_dir/proprietary/$type" -type f -printf "%P\n" | sort)
 EOF
 }
 EOH
-chmod +x "system/addon.d/70-$type.sh"
+chmod +x "system/$ADDOND_SCRIPT"
 
 # Normalize file modification times for reproducible builds
 find system -print0 | xargs -0r touch -hr "$main_dir/proprietary"
 
 # Create tar archive of files to install
-tar cf "$type.tar" -C "system" . -C "$main_dir/proprietary/$type" . \
+source_dir="$main_dir/proprietary/$type"
+tar cf "$type.tar" \
+    -C "system" "$ADDOND_SCRIPT" \
+    -C "$source_dir" $(ls "$source_dir") \
     --owner=0 --group=0 --numeric-owner --sort=name
 
 # Generate update-binary (script that handles installation)
