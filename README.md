@@ -48,24 +48,24 @@ using this option to install Houdini optionally.
 proprietary files in an Android build.
 
   - **Houdini:**
-    If `WITH_NATIVE_BRIDGE := true` is set, Houdini will be bundled with the
-    Android build. Otherwise, only build options are set to prepare the build
-    for later installation (e.g. with the flashable ZIP packages).
+    `board/native_bridge_arm_on_x86.mk` must be included from `BoardConfig.mk`
+    even if a native bridge should be optionally installed. It configures the
+    build system to build additional code needed to run ARM apps.
 
-    - `BoardConfig.mk`:
+    - `BoardConfig.mk`: Always required.
 
         ```make
         -include vendor/google/chromeos/board/native_bridge_arm_on_x86.mk
         ```
 
-    - `device.mk`:
+    - `device.mk`: Optional: Bundle Houdini directly with the Android build.
 
         ```make
         # WITH_NATIVE_BRIDGE := true
         $(call inherit-product-if-exists, vendor/google/chromeos/target/houdini.mk)
         ```
 
-  - **Widevine:** `device.mk`: Bundle Widevine with the Android build.
+  - **Widevine:** `device.mk`: Bundle Widevine directly with the Android build.
 
     ```make
     $(call inherit-product-if-exists, vendor/google/chromeos/target/widevine.mk)

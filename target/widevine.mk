@@ -1,4 +1,4 @@
-# Include and enable Widevine DRM in the built system.
+# Bundle Widevine DRM
 WIDEVINE_PATH := $(dir $(LOCAL_PATH))proprietary/widevine/vendor
 
 PRODUCT_COPY_FILES += \

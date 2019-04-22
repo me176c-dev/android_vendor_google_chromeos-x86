@@ -43,7 +43,7 @@ cat - "$zip_dir/addond.tail.sh" $addond_addon > "$addond_script" <<EOH
 . /tmp/backuptool.functions
 
 list_files() {
-cat<<EOF
+cat <<EOF
 $(find "$main_dir/proprietary/$type" -type f -printf "%P\n" | sort)
 EOF
 }
