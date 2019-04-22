@@ -71,5 +71,14 @@ proprietary files in an Android build.
     $(call inherit-product-if-exists, vendor/google/chromeos/target/widevine.mk)
     ```
 
+### SELinux Policy
+`sepolicy` contains a base policy for both Widevine and Houdini and will be needed
+to use them in enforcing mode. It should be included in the base system since
+the ZIPs do not attempt to patch the prebuilt policy.
+
+```make
+BOARD_SEPOLICY_DIRS += vendor/google/chromeos/sepolicy
+```
+
 ## License
 Please see [`LICENSE`](/LICENSE).
