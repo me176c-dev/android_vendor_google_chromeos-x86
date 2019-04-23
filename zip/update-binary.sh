@@ -55,7 +55,7 @@ set_progress 0.8
 
 ui_print " -> Completing installation"
 touch /tmp/backuptool.functions
-"$ADDOND_SCRIPT" post-restore
+S=/system "$ADDOND_SCRIPT" post-restore
 set_progress 0.9
 
 ui_print " -> Done!"
