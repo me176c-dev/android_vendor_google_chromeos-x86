@@ -58,10 +58,16 @@ proprietary files in an Android build.
         -include vendor/google/chromeos/board/native_bridge_arm_on_x86.mk
         ```
 
-    - `device.mk`: Optional: Bundle Houdini directly with the Android build.
+    - `device.mk`: Do not advertise support for ARM ABI by default (for use when
+        Houdini is not bundled):
 
         ```make
-        # WITH_NATIVE_BRIDGE := true
+        $(call inherit-product-if-exists, vendor/google/chromeos/target/native_bridge_arm_on_x86.mk)
+        ```
+
+        Optional: Bundle Houdini directly with the Android build:
+
+        ```make
         $(call inherit-product-if-exists, vendor/google/chromeos/target/houdini.mk)
         ```
 
