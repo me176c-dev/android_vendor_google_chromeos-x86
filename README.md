@@ -55,26 +55,26 @@ proprietary files in an Android build.
     - `BoardConfig.mk`: Always required.
 
         ```make
-        -include vendor/google/chromeos/board/native_bridge_arm_on_x86.mk
+        -include vendor/google/chromeos-x86/board/native_bridge_arm_on_x86.mk
         ```
 
     - `device.mk`: Do not advertise support for ARM ABI by default (for use when
         Houdini is not bundled):
 
         ```make
-        $(call inherit-product-if-exists, vendor/google/chromeos/target/native_bridge_arm_on_x86.mk)
+        $(call inherit-product-if-exists, vendor/google/chromeos-x86/target/native_bridge_arm_on_x86.mk)
         ```
 
         Optional: Bundle Houdini directly with the Android build:
 
         ```make
-        $(call inherit-product-if-exists, vendor/google/chromeos/target/houdini.mk)
+        $(call inherit-product-if-exists, vendor/google/chromeos-x86/target/houdini.mk)
         ```
 
   - **Widevine:** `device.mk`: Bundle Widevine directly with the Android build.
 
     ```make
-    $(call inherit-product-if-exists, vendor/google/chromeos/target/widevine.mk)
+    $(call inherit-product-if-exists, vendor/google/chromeos-x86/target/widevine.mk)
     ```
 
 ### SELinux Policy
@@ -83,7 +83,7 @@ to use them in enforcing mode. It should be included in the base system since
 the ZIPs do not attempt to patch the prebuilt policy.
 
 ```make
-BOARD_SEPOLICY_DIRS += vendor/google/chromeos/sepolicy
+BOARD_SEPOLICY_DIRS += vendor/google/chromeos-x86/sepolicy
 ```
 
 ## License
