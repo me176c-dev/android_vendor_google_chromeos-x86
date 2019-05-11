@@ -1,4 +1,4 @@
-# android_vendor_google_chromeos
+# android_vendor_google_chromeos-x86
 This project provides scripts to extract (proprietary) files
 from the Android container in ChromeOS recovery images,
 for use in x86-based Android installations.
