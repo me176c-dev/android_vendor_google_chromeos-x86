@@ -19,7 +19,17 @@ read -rp "This script requires 'sudo' to mount the partitions in the ChromeOS re
 
 echo "Checking ChromeOS image..."
 if ! sha1sum -c <<< "$CHROMEOS_SHA1" 2> /dev/null; then
-    curl -Lo "$CHROMEOS_FILENAME" "$CHROMEOS_URL"
+    if command -v curl &> /dev/null; then
+        curl -fLo "$CHROMEOS_FILENAME" "$CHROMEOS_URL"
+    elif command -v wget &> /dev/null; then
+        wget -O "$CHROMEOS_FILENAME" "$CHROMEOS_URL"
+    else
+        echo "This script requires 'curl' or 'wget' to download the ChromeOS recovery image."
+        echo "You can install one of them with the package manager provided by your distribution."
+        echo "Alternatively, download $CHROMEOS_URL manually and place it in the current directory."
+        exit 1
+    fi
+
     sha1sum -c <<< "$CHROMEOS_SHA1"
 fi
 

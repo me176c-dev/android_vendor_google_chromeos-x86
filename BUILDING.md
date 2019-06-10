@@ -11,8 +11,8 @@ Therefore its integrity can be verified using the checksums available in the
 
 ### Requirements
 - Linux (e.g. Debian, Ubuntu, ...)
-- curl, rsync, zip, unzip
-  - Debian/Ubuntu: `sudo apt install curl rsync zip unzip`
+- curl or wget, rsync, zip, unzip
+  - Debian/Ubuntu: `sudo apt install curl rsync zip unzip` (usually installed by default)
 
 ### Building
 1. Download the **Source code** as `.tar.gz` from the
