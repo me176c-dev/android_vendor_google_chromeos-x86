@@ -82,5 +82,8 @@ find . -print0 | xargs -0r touch -hr "$main_dir/proprietary"
 mkdir -p "$out_dir"
 filename="$type-x86-chromeos-$version.zip"
 rm -f "$out_dir/$filename"
-zip -rqX "$out_dir/$filename" META-INF LICENSE "$type.tar"
+zip -qX "$out_dir/$filename" \
+    META-INF/com/google/android/update-binary \
+    META-INF/com/google/android/updater-script \
+    LICENSE "$type.tar"
 echo "Successfully built: $filename"
