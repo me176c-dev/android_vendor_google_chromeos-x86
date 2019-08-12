@@ -4,12 +4,12 @@ set -euo pipefail
 # Use consistent umask for reproducible builds
 umask 022
 
-CHROMEOS_VERSION="11895.118.0_nocturne"
+CHROMEOS_VERSION="12105.100.0_nocturne"
 CHROMEOS_RECOVERY="chromeos_${CHROMEOS_VERSION}_recovery_stable-channel_mp"
 
 CHROMEOS_FILENAME="$CHROMEOS_RECOVERY.bin.zip"
 CHROMEOS_URL="https://dl.google.com/dl/edgedl/chromeos/recovery/$CHROMEOS_FILENAME"
-CHROMEOS_SHA1="fbebaffefbce2d13689d09f95634b528d4ac223c $CHROMEOS_FILENAME"
+CHROMEOS_SHA1="53ca73c712e90885563245bdf3a363456de637e7 $CHROMEOS_FILENAME"
 
 CHROMEOS_FILE="$PWD/$CHROMEOS_FILENAME"
 TARGET_DIR="$PWD/proprietary"
@@ -95,6 +95,13 @@ etc/binfmt_misc
 lib/libhoudini.so
 lib/arm
 EOF
+
+# It's not quite clear what is the purpose of cpuinfo.pure32...
+# The 32-bit version of Houdini cannot emulate aarch64 (afaik),
+# so there is little point in pretending to be an ARMv8 processor...
+# Continue using the ARMv7 version for now.
+mv "$TARGET_DIR/houdini/lib/arm/cpuinfo.pure32" "$TARGET_DIR/houdini/lib/arm/cpuinfo"
+touch -hr vendor/lib/arm "$TARGET_DIR/houdini/lib/arm"
 
 # Normalize file modification times
 touch -hr "$CHROMEOS_ANDROID_VENDOR_IMAGE" "$TARGET_DIR"{/*,}
